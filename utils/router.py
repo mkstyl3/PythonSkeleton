@@ -33,7 +33,6 @@ class Router:
             resp.body = str(e)
 
     def getParams(self, req):
-        print('test')
         params = dict()
         if req.method == 'GET':
             params = req.params
