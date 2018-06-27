@@ -2,12 +2,18 @@ from models.parent_model import ParentModel
 
 
 class UserModel(ParentModel):
+    __tablename__ = 'users'
+    
     def __init__(self):
         super(UserModel, self).__init__()
 
     def get(self, id):
         """ option 1 """
-        return self.select("SELECT `name` FROM users WHERE `id` = :id;", {'id': id})
+        # return self.execute("SELECT * FROM users WHERE `id` = :id;", {'id': id})
         """ option 2 """
-        # result = self.call_proc('get_name', ["1"])
-        return result
+        # return self.call_proc('get_name', [id])
+        """ option 3 """
+        return self.select("users.id={id}".format(id=id), ["users.id", "name", "rol"])
+
+    def set(self, id, name, surname):
+        return self.update('id=%s'%(id), [{'name': name, 'surname': surname}])

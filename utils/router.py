@@ -22,13 +22,22 @@ class Router:
 
     def request(self, req, resp):
         try:
+            check = False
+            valid_method = False
+            resp.status = falcon.HTTP_405
             for route in routes:
-                if route['method'] == req.method.lower() and route['path'] == req.path:
+                if type(route['method']) == list:
+                    if req.method.lower() in route['method'] and route['path'] == req.path:
+                        valid_method = True
+                else:
+                    if route['method'] == req.method.lower() and route['path'] == req.path:
+                        valid_method = True
+                if valid_method:
+                    resp.status = falcon.HTTP_202
                     controller, method = route['resource'].split(':')
                     response = getattr(eval(controller)(), method)(self.getParams(req))
                     resp.body = response if isinstance(response, str) else str(response)
-                else:
-                    resp.status = falcon.HTTP_405
+                    break
         except Exception as e:
             resp.body = str(e)
 
@@ -36,7 +45,7 @@ class Router:
         params = dict()
         if req.method == 'GET':
             params = req.params
-        elif req.method == 'POST':
+        else:
             params = req.params
             if len(params) == 0:
                 post = req.bounded_stream.read(req.content_length or 0).decode('utf-8')
