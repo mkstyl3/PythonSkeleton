@@ -13,7 +13,7 @@ class UserModel(ParentModel):
         """ option 2 """
         # return self.call_proc('get_name', [id])
         """ option 3 """
-        return self.select("users.id={id}".format(id=id), ["users.id", "name", "rol"])
+        return self.select("users.id={id}".format(id=id), ["users.id", "name", "surnames", "rol"])
 
     def set(self, id, name, surnames):
         """ option 1"""
