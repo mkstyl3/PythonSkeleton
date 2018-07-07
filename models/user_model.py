@@ -9,14 +9,14 @@ class UserModel(ParentModel):
 
     def get(self, id):
         """ option 1 """
-        # return self.execute("SELECT * FROM users WHERE `id` = :id;", {'id': id})
+        return self.execute("SELECT * FROM users WHERE `id` = :id;", {'id': id})
         """ option 2 """
         # return self.call_proc('get_name', [id])
         """ option 3 """
-        return self.select("users.id={id}".format(id=id), ["users.id", "name", "surnames", "rol"])
+        # return self.select("users.id={id}".format(id=id))
 
     def set(self, id, name, surnames):
         """ option 1"""
-        # return self.update('id=%s' % (id), [{'name': name, 'surnames': surnames}])
+        return self.update('id=%s' % (id), [('name', name), ('surnames', surnames)])
         """ option 2 """
-        return self.call_proc('set_user', [id, name, surnames])
+        # return self.call_proc('set_user', [id, name, surnames])

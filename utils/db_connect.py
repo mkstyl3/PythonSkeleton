@@ -46,7 +46,7 @@ class DB(object):
     def insert(self):
         return "exec_insert"
 
-    def update(self, where, sets={}):
+    def update(self, where, sets=[()]):
         query = update(self.__table__) \
             .where(text(where)) \
             .values(sets)
@@ -64,8 +64,8 @@ class DB(object):
             cols = [self.__table__.c[col] for col in self.getColumns()]
         """ select table """
         query = select(cols)
-        # query = query.select_from(self.__table__)
-        query = query.select_from(self.__table__.join(text("rols"), text("users.id=rols.id")))
+        query = query.select_from(self.__table__)
+        # query = query.select_from(self.__table__.join(text("rols"), text("users.id=rols.id")))
         """ select where """
         if where is not None:
             query = query.where(text(where))
