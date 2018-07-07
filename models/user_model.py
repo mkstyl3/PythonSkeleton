@@ -15,5 +15,5 @@ class UserModel(ParentModel):
         """ option 3 """
         return self.select("users.id={id}".format(id=id), ["users.id", "name", "rol"])
 
-    def set(self, id, name, surname):
-        return self.update('id=%s'%(id), [{'name': name, 'surname': surname}])
+    def set(self, id, name, surnames):
+        return self.update('id=%s'%(id), [{'name': name, 'surnames': surnames}])

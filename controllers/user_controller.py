@@ -13,4 +13,4 @@ class UserController(ParentController):
         return self.jsonParse(self.user.get(params['id']))
 
     def set(self, params):
-        return self.jsonParse(self.user.set(params['id'], params['name'], params['surname']))
+        return self.jsonParse(self.user.set(params['id'], params['name'], params['surnames']))

@@ -52,7 +52,7 @@ class Router:
                 if post.find('&') != -1:  # form "x-www-form-urlencoded" if not lib falcon-multipart
                     post = '{' + re.sub(r'(\w+)=(\w+)', r'"\1":"\2"', post.replace('&', ',')) + '}'
                 elif post.find('form-data') != -1:  # form type " form-data "
-                    post = '{' + re.sub(r'(.*)(\r\n)(.*)("[\w\d]*")([\r\n]{0,})([\w\d]*)([\r\n]{0,})', r'\4:"\6",', post.replace('&', ',')) + '}'
+                    post = '{' + re.sub(r'(.*)(\r\n)(.*)("[\w\d\s]*")([\r\n]{0,})([\w\d\s]*)([\r\n]{0,})([\r]{1})([\n]{1})', r'\4:"\6",', post.replace('&', ',')) + '}'
                     post = post[0:-46] + '}'
                 params = json.loads(post)
         return params
