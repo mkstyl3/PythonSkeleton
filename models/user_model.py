@@ -3,7 +3,7 @@ from models.parent_model import ParentModel
 
 class UserModel(ParentModel):
     __tablename__ = 'users'
-    
+
     def __init__(self):
         super(UserModel, self).__init__()
 
@@ -16,4 +16,7 @@ class UserModel(ParentModel):
         return self.select("users.id={id}".format(id=id), ["users.id", "name", "rol"])
 
     def set(self, id, name, surnames):
-        return self.update('id=%s'%(id), [{'name': name, 'surnames': surnames}])
+        """ option 1"""
+        # return self.update('id=%s' % (id), [{'name': name, 'surnames': surnames}])
+        """ option 2 """
+        return self.call_proc('set_user', [id, name, surnames])

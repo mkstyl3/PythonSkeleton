@@ -23,21 +23,23 @@ class ParentModel(object):
                 .values(sets)
         result = connection.execute(query)
         connection.commit()
+        connection.close()
         return result.rowcount
 
     def select(self, where=None, columns=None):
+        """ select columns """
         if columns is not None:
             cols = [text(col) for col in columns]
         else:
             cols = [self.__table__.c[col] for col in self.getColumns()]
-        
+        """ select table """
         query = select(cols)
         # query = query.select_from(self.__table__)
         query = query.select_from(self.__table__.join(text("rols"), text("users.id=rols.id")))
-        
+        """ select where """
         if where is not None:
             query = query.where(text(where))
-        
+        """ execute query """
         result = connection.execute(query)
         return [dict(row) for row in result]
     
@@ -46,5 +48,6 @@ class ParentModel(object):
         return [dict(row) for row in result]
     
     def call_proc(self, procedure, bind_params=[]):
-        raw_connection.callproc(procedure, bind_params)
-        return list(raw_connection.fetchall())
+        cursor.callproc(procedure, bind_params)
+        raw_connection.commit()
+        return list(cursor.fetchall())
